@@ -9,7 +9,7 @@ export default createGlobalStyle`
     }
 
     body {
-        background-position: center;
+        background-position: 0 700px;
         background-size: cover;
         background-image: url(https://i.pinimg.com/originals/f6/a1/8a/f6a18ac56651ce4f9ca7e0230706a0b6.png);
         -webkit-font-smothing: antialised;
@@ -20,9 +20,9 @@ export default createGlobalStyle`
     }
 
     #root {
-        max-width: 1080px;
+        max-width: 1440px;
         margin: 0 auto;
-        padding: 40px 20px;
+        padding: 30px 20px;
     }
 
     button {
