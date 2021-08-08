@@ -9,7 +9,7 @@ export default createGlobalStyle`
     }
 
     body {
-        background-position: 0 700px;
+        background: no-repeat;
         background-size: cover;
         background-image: url(https://i.pinimg.com/originals/f6/a1/8a/f6a18ac56651ce4f9ca7e0230706a0b6.png);
         -webkit-font-smothing: antialised;

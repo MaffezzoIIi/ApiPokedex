@@ -172,7 +172,7 @@ export const Card = styled.div`
     }
 `;
 
-export const Hp  = styled.div` 
+export const Hp = styled.div` 
     background: #FF5959;   
     p { margin-left: 80px; }
 `;
@@ -180,5 +180,5 @@ export const Att = styled.div` background: #F08030; p { margin-left: 80px; }`;
 export const Def = styled.div` background: #FAE078; p { margin-left: 80px; }`;
 export const SpA = styled.div` background: #9DB7F5; p { margin-left: 80px; }`;
 export const SpD = styled.div` background: #A7DB8D; p { margin-left: 80px; }`;
-export const Spd = styled.div` background: #FA92B2; p { margin-left: 80px; }`; 
+export const Spd = styled.div` background: #FA92B2; p { margin-left: 80px; }`;
 
