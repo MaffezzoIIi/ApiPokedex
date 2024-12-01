@@ -68,7 +68,7 @@ function Dashboard() {
         setPokemon(response.data);
         setInputError("");
       })
-      .catch((error) => {
+      .catch(() => {
         setInputError("Pokemon não encontrado!");
       });
   }
