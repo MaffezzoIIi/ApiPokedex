@@ -1,0 +1,6 @@
+projectKey=api:pokemon
+serverUrl=http://localhost:9000
+serverVersion=10.6.0.92116
+dashboardUrl=http://localhost:9000/dashboard?id=api%3Apokemon
+ceTaskId=a89f2d7c-3d0f-4304-830c-7b6260f1c24e
+ceTaskUrl=http://localhost:9000/api/ce/task?id=a89f2d7c-3d0f-4304-830c-7b6260f1c24e
