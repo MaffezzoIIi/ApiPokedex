@@ -1,5 +1,6 @@
 "use client";
 
+import Error from "@/components/error";
 import Input from "@/components/input";
 import Status from "@/components/stats";
 import Tittle from "@/components/tittle";
@@ -65,6 +66,7 @@ function Dashboard() {
       .get<Pokemon>(`pokemon/${pokemonName.toLowerCase()}`)
       .then((response) => {
         setPokemon(response.data);
+        setInputError("");
       })
       .catch((error) => {
         setInputError("Pokemon não encontrado!");
@@ -81,7 +83,7 @@ function Dashboard() {
             Pesquisar
           </button>
         </form>
-        {inputError && <span>{inputError}</span>}
+        {inputError && <Error>{inputError}</Error>}
       </div>
       <div className="bg-slate-100 p-4 shadow-sm rounded border flex flex-row gap-4">
         {pokemon ? (
