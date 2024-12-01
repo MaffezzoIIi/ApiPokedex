@@ -7,7 +7,7 @@ env:
 on: 
     push: 
         branches: 
-            - main
+            - master
 
 jobs:
     Deploy-Production:
@@ -27,4 +27,4 @@ jobs:
             
             - name: Deploy Project Artifacts
               run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-              
+
