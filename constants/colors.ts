@@ -1,74 +1,26 @@
-export const Colors = [
-  {
-    name: "BUG",
-    color: "#92ba3a"
-  },
-  {
-    name: "DARK",
-    color: "#585760"
-  },
-  {
-    name: "DRAGON",
-    color: "#166cc5"
-  },
-  {
-    name: "ELECTRIC",
-    color: "#f0d85a"
-  },
-  {
-    name: "FAIRY",
-    color: "#ed92e4"
-  },
-  {
-    name: "FIGHTING",
-    color: "#d14461"
-  },
-  {
-    name: "FIRE",
-    color: "#f8a455"
-  },
-  {
-    name: "FLYING",
-    color: "#a1bce9"
-  },
-  {
-    name: "GHOST",
-    color: "#606fb9"
-  },
-  {
-    name: "GRASS",
-    color: "#62bc5d"
-  },
-  {
-    name: "GROUND",
-    color: "#d87c52"
-  },
-  {
-    name: "ICE",
-    color: "#78cfc0"
-  },
-  {
-    name: "NORMAL",
-    color: "#a0a19f"
-  },
-  {
-    name: "POISON",
-    color: "#b666cd"
-  },
-  {
-    name: "PSYCHIC",
-    color: "#f88684"
-  },
-  {
-    name: "ROCK",
-    color: "#c9ba8d"
-  },
-  {
-    name: "STEEL",
-    color: "#5994a1"
-  },
-  {
-    name: "WATER",
-    color: "#579ddc"
-  }
-];
+export const Colors: { [key: string]: string } = {
+  BUG: "92ba3a",
+  DARK: "585760",
+  DRAGON: "166cc5",
+  ELECTRIC: "f0d85a",
+  FAIRY: "ed92e4",
+  FIGHTING: "d14461",
+  FIRE: "f8a455",
+  FLYING: "a1bce9",
+  GHOST: "606fb9",
+  GRASS: "62bc5d",
+  GROUND: "d87c52",
+  ICE: "78cfc0",
+  NORMAL: "a0a19f",
+  POISON: "b666cd",
+  PSYCHIC: "f88684",
+  ROCK: "c9ba8d",
+  STEEL: "5994a1",
+  WATER: "579ddc",
+  hp: "#FF5959",
+  attack: "#F08030",
+  defense: "#FAE078",
+  "special-attack": "#9DB7F5",
+  "special-defense": "#A7DB8D",
+  speed: "#FA92B2",
+};
