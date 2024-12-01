@@ -1,171 +1,143 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from 'react';
-import api from '@/service/api';
-import { Colors } from '@/constants/colors';
-import { Att, Card, Def, Error, Form, Hp, SpA, Spd, SpD, Tittle } from '@/app/(pages)/style';
-import Link from 'next/link';
+import Input from "@/components/input";
+import Status from "@/components/stats";
+import Tittle from "@/components/tittle";
+import Types from "@/components/types";
+import api from "@/service/api";
+import { FormEvent, useState } from "react";
 
 interface Pokemon {
-    name: string;
-    id: number;
-    height: number;
-    weight: number;
-    sprites: {
-        other: {
-            "official-artwork": {
-                front_default: string;
-            }
-        }
+  name: string;
+  id: number;
+  height: number;
+  weight: number;
+  sprites: {
+    other: {
+      "official-artwork": {
+        front_default: string;
+      };
     };
-    types: ITypes[];
-    stats: IStats[];
-};
+  };
+  types: ITypes[];
+  stats: IStats[];
+  abilities: IAbilities[];
+}
 
 interface ITypes {
-    type: {
-        name: string;
-    }
-};
+  type: {
+    name: string;
+  };
+}
 
 interface IStats {
-    base_stat: number;
-};
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+
+interface IAbilities {
+  ability: {
+    name: string;
+  };
+}
 
 function Dashboard() {
+  const [inputError, setInputError] = useState("");
 
-    const [newPokemon, setNewPokemon] = useState('');
-    const [inputError, setInputError] = useState('');
+  const [pokemon, setPokemon] = useState<Pokemon>();
 
+  async function handleChangePokemon(
+    event: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
+    event.preventDefault();
 
-    const [infos, setInfos] = useState<Pokemon>(() => {
+    const formData = new FormData(event.currentTarget);
+    const pokemonName = formData.get("pokemon") as string;
 
-        const storagePokemon = localStorage.getItem(
-            '@PokemonExplore:infos'
-        );
-
-        if (storagePokemon) {
-            return JSON.parse(storagePokemon);
-        }
-        return "";
-    });
-
-    useEffect(() => {
-        localStorage.setItem(
-            '@PokemonExplore:infos',
-            JSON.stringify(infos)
-        );
-    });
-
-    const [types, setTypes] = useState<ITypes[]>([]);
-
-    async function handleAddCnpj(
-        event: FormEvent<HTMLFormElement>,
-    ): Promise<void> {
-        event.preventDefault();
-
-        if (!newPokemon) {
-            setInputError("Digite o nome de um Pokemon! Para pesquisar.");
-            return;
-        }
-
-        try {
-            const response = await api.get<Pokemon>(`pokemon/${newPokemon}`);
-            const pokemon = response.data;
-
-            setInfos(pokemon);
-            setTypes(pokemon.types);
-
-            setNewPokemon('');
-            setInputError('');
-        } catch (err) {
-            setInputError("Digite o nome de um Pokemon! Para pesquisar.");
-        }
+    if (!pokemonName) {
+      setInputError("Digite o nome de um Pokemon! Para pesquisar.");
+      return;
     }
 
-    function typePokemon(type: ITypes) {
-        for (var i = 0; i < Colors.length; i++) {
-            if (type.type.name.toLocaleUpperCase() === Colors[i].name) {
-                return <div style={{ background: Colors[i].color }}>{type.type.name.toLocaleUpperCase()}</div>
-            }
-        }
-    }
+    api
+      .get<Pokemon>(`pokemon/${pokemonName.toLowerCase()}`)
+      .then((response) => {
+        setPokemon(response.data);
+      })
+      .catch((error) => {
+        setInputError("Pokemon não encontrado!");
+      });
+  }
 
-    function setBackGroundColor(type: ITypes[]) {
-        var cor1 = " ";
-        var cor2 = " ";
-
-        if (type.length == 1) {
-            for (let j = 0; j < Colors.length; j++) {
-                if (type[0].type.name.toLocaleUpperCase() === Colors[j].name) {
-                    cor1 = Colors[j].color;
-                }
-            }
-
-            return 'linear-gradient(to top, ' + cor1 + ' , #fff)';
-        } else {
-            for (var i = 0; i < Colors.length; i++) {
-                if (type[0].type.name.toLocaleUpperCase() === Colors[i].name) {
-                    cor1 = Colors[i].color;
-                }
-                if (type[1].type.name.toLocaleUpperCase() === Colors[i].name) {
-                    cor2 = Colors[i].color;
-                }
-            }
-
-            return 'linear-gradient(to top, ' + cor1 + ' , #fff, ' + cor2 + ')';
-        }
-    }
-
-
-    return (
-        <>
-            <Tittle>Pesquisa de POKEMON</Tittle>
-
-            {inputError && <Error>{inputError}</Error>}
-            <Form hasError={!!(inputError)} onSubmit={handleAddCnpj}>
-                <input
-                    value={newPokemon}
-                    onChange={e => setNewPokemon(e.target.value)}
-                    placeholder="Informe o pokemon!"
-                />
-                <button type="submit">Pesquisar</button>
-            </Form>
-
-            {infos ?
-                <Card>
-
-                    <Link href={'/'} style={{ background: setBackGroundColor(infos?.types) }}>
-                        <div id="img-type">
-                            <img src={infos?.sprites.other["official-artwork"].front_default} alt="" />
-                            <div id="types">
-                                {types.map(types => (
-                                    typePokemon(types)
-                                ))}
-                            </div>
-                        </div>
-                        <div id="datails">
-                            <p>Nome: {infos?.name[0].toUpperCase()}{infos?.name.substring(1)}</p>
-                            <p>NRº {infos?.id}</p>
-                            <p>Altura: {Number(infos?.height) / 10} m</p>
-                            <p>Peso: {Number(infos?.weight) / 10} kg</p>
-                        </div>
-                        <div id="stats">
-                            <strong>STATS: </strong>
-                        </div>
-                        <div id="values">
-                            <Hp style={{ width: Number(infos?.stats[0].base_stat) * 1.3 }}><span>HP:</span><p>{infos?.stats[0].base_stat}</p></Hp>
-                            <Att style={{ width: Number(infos?.stats[1].base_stat) * 1.3 }}><span>Attack: </span><p>{infos?.stats[1].base_stat}</p></Att>
-                            <Def style={{ width: Number(infos?.stats[2].base_stat) * 1.3 }}><span>Defense: </span><p>{infos?.stats[2].base_stat}</p></Def>
-                            <SpA style={{ width: Number(infos?.stats[3].base_stat) * 1.3 }}><span>Sp. Atk: </span><p>{infos?.stats[3].base_stat}</p></SpA>
-                            <SpD style={{ width: Number(infos?.stats[4].base_stat) * 1.3 }}><span>Sp. Def: </span><p>{infos?.stats[4].base_stat}</p></SpD>
-                            <Spd style={{ width: Number(infos?.stats[5].base_stat) * 1.3 }}><span>Speed:  </span><p>{infos?.stats[5].base_stat}</p></Spd>
-                        </div>
-                    </Link>
-                </Card>
-                : ""}
-        </>
-    );
+  return (
+    <div className="flex items-center justify-center h-screen flex-col gap-4 ">
+      <div className="flex flex-col gap-2 items-center bg-slate-100 p-4 shadow-md rounded border ">
+        <Tittle>Api POKEMON!</Tittle>
+        <form onSubmit={handleChangePokemon} className="flex flex-col gap-2">
+          <Input name="pokemon" label="Inofrme o Pokemon!" />
+          <button type="submit" className="bg-blue-200 rounded p-1">
+            Pesquisar
+          </button>
+        </form>
+        {inputError && <span>{inputError}</span>}
+      </div>
+      <div className="bg-slate-100 p-4 shadow-sm rounded border flex flex-row gap-4">
+        {pokemon ? (
+          <>
+            <div className="border-r-[1px] pr-2">
+              <img
+                src={pokemon?.sprites.other["official-artwork"].front_default}
+                alt={pokemon?.name}
+                className="w-40 h-40"
+              />
+              <div className="grid grid-cols-2 gap-2 align-middle">
+                {pokemon?.types.map((type) => {
+                  return <Types key={type.type.name} type={type.type.name} />;
+                })}
+              </div>
+            </div>
+            <div className="grid grid-row-2 gap-2">
+              <div>Status</div>
+              <div className="flex flex-col gap-2">
+                {pokemon?.stats.map((stat) => {
+                  return (
+                    <Status
+                      key={stat.stat.name}
+                      name={stat.stat.name}
+                      base_stat={stat.base_stat}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 border-l-[1px] pl-2">
+              <span>Número: {pokemon?.id}</span>
+              <span className="capitalize">{pokemon?.name}</span>
+              <span>Altura: {pokemon?.height / 10} m</span>
+              <span>Peso: {pokemon?.weight / 10} kg</span>
+              <hr />
+              <div className="flex flex-col">
+                <span>Habilidades</span>
+                <div className="flex gap-2">
+                  {pokemon?.abilities.map((ability) => {
+                    return (
+                      <span className="capitalize" key={ability.ability.name}>
+                        {ability.ability.name}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <h1>Nenhuma informação encontrada!</h1>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard;
