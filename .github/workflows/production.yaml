@@ -22,7 +22,7 @@ jobs:
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: npm run build
+        run: vercel run --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project Artifacts
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

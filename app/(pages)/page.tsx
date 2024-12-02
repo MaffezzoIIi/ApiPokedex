@@ -78,7 +78,7 @@ function Dashboard() {
       <div className="flex flex-col gap-2 items-center bg-slate-100 p-4 shadow-md rounded border ">
         <Tittle>Api POKEMON!</Tittle>
         <form onSubmit={handleChangePokemon} className="flex flex-col gap-2">
-          <Input name="pokemon" label="Inofrme o Pokemon!" />
+          <Input name="pokemon" label="Informe o Pokemon!" />
           <button type="submit" className="bg-blue-200 rounded p-1">
             Pesquisar
           </button>
